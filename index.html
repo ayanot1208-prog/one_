@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>ONE運営 担当業務</title>
+    <style>
+        /* -------------------------
+           ベーススタイル
+        ------------------------- */
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px; 
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* -------------------------
+           ヘッダータイトル
+        ------------------------- */
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 24px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #cbd5e1;
+            letter-spacing: 2px;
+        }
+
+        /* -------------------------
+           全体レイアウト (CSS Grid)
+        ------------------------- */
+        .main-grid {
+            display: grid;
+            /* 全体を均等な3列に分割 */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+            align-items: stretch; /* 同じ行のボックスの高さを自動で揃える */
+        }
+
+        /* 全体チームを3列分に広げる */
+        .card-overall {
+            grid-column: 1 / 4; 
+        }
+
+        /* 左下のCS・集客提携を縦に並べるラッパー（2列分） */
+        .left-bottom-group {
+            grid-column: 1 / 3; 
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* 右下のSNS・ライター・AI開発を縦に並べるラッパー（1列分） */
+        .right-bottom-group {
+            grid-column: 3; 
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+        }
+
+        /* 左右それぞれのグループの「一番最後の箱」を下まで伸ばし、下辺を揃える */
+        .left-bottom-group .team-card:last-child,
+        .right-bottom-group .team-card:last-child {
+            flex-grow: 1; 
+        }
+
+        /* -------------------------
+           チームカード
+        ------------------------- */
+        .team-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .team-header {
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* チームごとのテーマカラー */
+        .color-overall { background-color: #ffffff; color: #1e293b; border-bottom: 1px solid #e2e8f0; } /* 白 */
+        .color-sales { background-color: #ef4444; color: #ffffff; }   /* 赤 */
+        .color-marketing { background-color: #3b82f6; color: #ffffff; } /* 青 */
+        .color-ad { background-color: #84cc16; color: #ffffff; }      /* 黄緑 */
+        .color-cs { background-color: #fbbf24; color: #1e293b; }      /* 黄（文字は濃い色） */
+        .color-sns { background-color: #f97316; color: #ffffff; }     /* オレンジ */
+        .color-writer { background-color: #a855f7; color: #ffffff; }  /* 紫 */
+        .color-ai-dev { background-color: #f43f5e; color: #ffffff; }  /* ローズピンク */
+        .color-alliance { background-color: #334155; color: #ffffff; } /* ネイビー */
+
+        /* -------------------------
+           業務リスト（構造化部分）
+        ------------------------- */
+        .task-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1; 
+        }
+
+        /* 横並び用のリスト（集客提携で使用） - Gridレイアウトに変更して左揃えを維持 */
+        .task-list-horizontal {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 12px 16px;
+            gap: 16px; 
+        }
+        .task-list-horizontal .task-item {
+            padding: 0; 
+            border-bottom: none; 
+        }
+
+        /* カテゴリー区切り（物販ONE・AI ONEなど） */
+        .task-group-title {
+            background-color: #f8fafc;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #475569;
+            border-bottom: 1px solid #e2e8f0;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .task-list .task-group-title:first-child {
+            border-top: none;
+        }
+
+        .task-item {
+            display: flex;
+            flex-direction: column;
+            padding: 12px 16px; 
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 情報の優先順位：業務内容を強調するラベル */
+        .task-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #475569;
+            background-color: #f1f5f9;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            width: fit-content;
+        }
+
+        /* 担当者名 */
+        .task-person {
+            font-size: 15px;
+            font-weight: bold;
+            color: #1e293b;
+            padding-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+            flex-wrap: wrap; /* テキストが長くなった場合の折り返し対応 */
+        }
+
+        /* 広告媒体や担当アフィリエイターなどのサブバッジ */
+        .sub-badge {
+            font-size: 10px;
+            font-weight: normal;
+            padding: 2px 6px;
+            border-radius: 12px;
+            color: #fff;
+            white-space: nowrap;
+        }
+        .badge-meta { background-color: #0668E1; }
+        .badge-tiktok { background-color: #000000; }
+        .badge-google { background-color: #DB4437; color: #fff; }
+        .badge-x { background-color: #1DA1F2; }
+        .badge-affiliate { background-color: #64748b; } /* 傘下アフィリエイター用 */
+
+        /* 複数担当者がいる場合のマージン調整 */
+        .person-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .multiple-persons .task-person {
+            position: relative;
+            padding-left: 14px;
+        }
+        .multiple-persons .task-person::before {
+            content: "・";
+            position: absolute;
+            left: -2px;
+            color: #94a3b8;
+        }
+
+        /* -------------------------
+           CSチーム専用（横並びレイアウト）
+        ------------------------- */
+        .cs-content-flex {
+            display: flex;
+            flex-grow: 1; 
+        }
+        .cs-col {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+        }
+        /* 左の列（物販ONE）と右の列（AI ONE）の間に区切り線 */
+        .cs-col:first-child {
+            border-right: 1px solid #e2e8f0; 
+        }
+
+        /* -------------------------
+           スマートフォン用レスポンシブ対応
+        ------------------------- */
+        @media screen and (max-width: 768px) {
+            /* 全体をフレックスボックスに変更して縦並びに */
+            .main-grid {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* グループの枠を解除（表示順番を自由に入れ替えるため） */
+            .left-bottom-group,
+            .right-bottom-group {
+                display: contents;
+            }
+
+            /* 集客提携チームを強制的に一番下に配置 */
+            .card-alliance {
+                order: 99;
+            }
+
+            /* スマホ時は集客提携の横並びを1列に変更 */
+            .task-list-horizontal {
+                grid-template-columns: 1fr;
+            }
+
+            /* CSチーム内を縦並びに変更 */
+            .cs-content-flex {
+                flex-direction: column;
+            }
+
+            /* スマホ時はCSチームの区切り線を解除 */
+            .cs-col:first-child {
+                border-right: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="page-title">ONE運営 担当業務</h1>
+
+    <div class="main-grid">
+        
+        <div class="team-card card-overall">
+            <div class="team-header color-overall">🌟 全体</div>
+            <ul class="task-list">
+                <li class="task-item">
+                    <div class="person-group multiple-persons">
+                        <span class="task-person">森谷和正</span>
+                        <span class="task-person">澤田晴菜</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="team-card">
+            <div class="team-header color-sales">🏢 セールスチーム</div>
+            <ul class="task-list">
+                <li class="task-item">
+                    <span class="task-label">全体</span>
+                    <span class="task-person">渡部有人</span>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">セミナー関連</span>
+                    <span class="task-person">尾崎成就（こはく）</span>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">事務・クローザー</span>
+                    <span class="task-person">上野直道</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="team-card">
+            <div class="team-header color-marketing">📈 マーケチーム</div>
+            <ul class="task-list">
+                <li class="task-item">
+                    <span class="task-label">全体</span>
+                    <span class="task-person">渡部有人</span>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">LINE返信・音声コンテンツ</span>
+                    <span class="task-person">仲村静香</span>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">UTAGE構築・LINE複製・配信数UP</span>
+                    <span class="task-person">岩井亜沙美</span>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">導線改善・数値管理</span>
+                    <span class="task-person">生駒彩花</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="team-card">
+            <div class="team-header color-ad">📢 広告チーム</div>
+            <ul class="task-list">
+                <li class="task-item">
+                    <span class="task-label">統括</span>
+                    <span class="task-person">渡部沙織</span>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">広告運用</span>
+                    <div class="person-group multiple-persons">
+                        <span class="task-person">松井美穂・大室 佳子 <span class="sub-badge badge-meta">Meta</span></span>
+                        <span class="task-person">中澤結莉乃・田中絵理 <span class="sub-badge badge-tiktok">TikTok</span></span>
+                        <span class="task-person">柘植彩乃・伊藤光 <span class="sub-badge badge-google">Google</span></span>
+                        <span class="task-person">宮田奈那子 <span class="sub-badge badge-x">X</span></span>
+                    </div>
+                </li>
+                <li class="task-item">
+                    <span class="task-label">CR関連</span>
+                    <span class="task-person">柘植彩乃</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="left-bottom-group">
+            <div class="team-card card-cs">
+                <div class="team-header color-cs">🤝 CSチーム</div>
+                <div class="cs-content-flex">
+                    <div class="cs-col">
+                        <div class="task-group-title">物販ONE</div>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <span class="task-label">統括・Amazon部門</span>
+                                <span class="task-person">久冨木伸</span>
+                            </li>
+                            <li class="task-item">
+                                <span class="task-label">アパレル部門</span>
+                                <span class="task-person">大坂豪謹</span>
+                            </li>
+                            <li class="task-item">
+                                <span class="task-label">ハイブランド卸部門</span>
+                                <span class="task-person">代田翼</span>
+                            </li>
+                            <li class="task-item">
+                                <span class="task-label">eBay部門</span>
+                                <span class="task-person">関朋美</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cs-col">
+                        <div class="task-group-title">AI ONE</div>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <span class="task-label">全体</span>
+                                <div class="person-group multiple-persons">
+                                    <span class="task-person">豊岡佑都</span>
+                                    <span class="task-person">伊藤翔平</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card card-alliance">
+                <div class="team-header color-alliance">🤝 集客提携</div>
+                <ul class="task-list task-list-horizontal">
+                    <li class="task-item">
+                        <span class="task-label">ブイプロ</span>
+                        <span class="task-person">新井公平</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">りんださん</span>
+                        <span class="task-person">豊岡佑都</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">アドネス</span>
+                        <div class="person-group multiple-persons">
+                            <span class="task-person">渡部有人</span>
+                            <span class="task-person">尾崎成就（こはく）</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">みおさん</span>
+                        <span class="task-person">橋本沙彩</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">しょーてぃさん</span>
+                        <span class="task-person">尾崎成就（こはく）</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">メディアエイド</span>
+                        <div class="person-group multiple-persons">
+                            <span class="task-person">渡部有人</span>
+                            <span class="task-person">尾崎成就（こはく）</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">バズカレ</span>
+                        <div class="person-group multiple-persons">
+                            <span class="task-person">渡部有人</span>
+                            <span class="task-person">尾崎成就（こはく）</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">チョーさん</span>
+                        <span class="task-person">宮城洋</span>
+                    </li>
+                    <li class="task-item" style="grid-column: span 3;"> <span class="task-label">なまいきくん</span>
+                        <div class="person-group multiple-persons">
+                            <span class="task-person">豊岡佑都 <span class="sub-badge badge-affiliate">シンさん</span></span>
+                            <span class="task-person">岡崎隆之介 <span class="sub-badge badge-affiliate">イーサン・カザマ・なおき</span></span>
+                            <span class="task-person">伊藤匠真 <span class="sub-badge badge-affiliate">デベロゴン・ごくう・こうめい</span></span>
+                            <span class="task-person">新井公平 <span class="sub-badge badge-affiliate">ねぷろ・ふくだ</span></span>
+                            <span class="task-person">仲井弘大 <span class="sub-badge badge-affiliate">カツタ・WK・しおん</span></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-bottom-group">
+            <div class="team-card">
+                <div class="team-header color-sns">📱 SNSチーム</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <span class="task-label">全体</span>
+                        <span class="task-person">磯貝祐介</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">撮影</span>
+                        <span class="task-person">須藤美祐</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="team-card">
+                <div class="team-header color-writer">✍️ ライターチーム</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <span class="task-label">全体</span>
+                        <span class="task-person">高橋純稀</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-header color-ai-dev">💻 AI開発チーム</div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <span class="task-label">全体</span>
+                        <span class="task-person">伊藤翔平</span>
+                    </li>
+                    <li class="task-item">
+                        <span class="task-label">設計・構築</span>
+                        <span class="task-person">小高航輝</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div> 
+</div>
+
+</body>
+</html>
