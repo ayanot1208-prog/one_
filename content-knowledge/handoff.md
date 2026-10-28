@@ -246,4 +246,5 @@
 | `content-knowledge/one-coin-consult-lp.md` | ワンコインコンサルの note 記事LP（v3確定）と参考記事の分析 |
 | `content-knowledge/one-coin-consult-videos.md` | 購入者向け動画（0〜3本目）の台本とスライドの文言 |
 | `content-knowledge/threads-posts.md` | Threads の型と Day1 の5投稿 |
+| `content-knowledge/support-meeting-video.md` | 特典ページ冒頭の10分動画（AI収益化サポート会への申し込みを増やす）の台本 |
 | `index.html` | 「ONE運営 担当業務」のページ（この発信作業とは別のもの） |
